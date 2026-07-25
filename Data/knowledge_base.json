@@ -1,1 +1,441 @@
 
+{
+  "metadata": {
+    "version": "1.1",
+    "focus": "Indian vegetarian kitchen",
+    "conditions_covered": ["diabetes", "pcos", "hypertension", "high_cholesterol", "thyroid", "obesity", "general_wellbeing"],
+    "description": "Nutrition knowledge base for condition-aware Indian vegetarian recipe generation"
+  },
+
+  "conditions": {
+    "diabetes": {
+      "label": "Diabetes",
+      "core_principle": "Keep blood sugar stable. Prioritise low-GI foods, high fibre, adequate protein at every meal. Avoid refined carbs, added sugar, and fruit juices.",
+      "dietary_rules": {
+        "avoid": [
+          "white rice (high GI)",
+          "maida / refined flour",
+          "sugar and jaggery in large amounts",
+          "fruit juices and sweetened drinks",
+          "potatoes in large portions",
+          "packaged biscuits and namkeen",
+          "white bread"
+        ],
+        "prefer": [
+          "millets (bajra, jowar, ragi, foxtail)",
+          "brown rice or hand-pounded rice in small portions",
+          "whole wheat roti over maida",
+          "dal and legumes at every meal for protein and fibre",
+          "non-starchy vegetables (spinach, methi, karela, lauki)",
+          "karela (bitter gourd) — natural blood sugar regulator",
+          "fenugreek seeds (methi dana) — improves insulin sensitivity",
+          "cinnamon — add to chai or khichdi",
+          "amla — excellent for blood sugar regulation",
+          "nuts and seeds as snacks"
+        ],
+        "portion_guidance": "Fill half the plate with vegetables, quarter with protein (dal/legumes), quarter with complex carbs (millet/brown rice). Never skip meals.",
+        "meal_timing": "3 main meals + 2 small snacks. No gaps longer than 3-4 hours. Avoid eating carbs alone."
+      },
+      "condition_specific_swaps": [
+        {"from": "white rice", "to": "foxtail millet (kangni) or cauliflower rice", "reason": "Lower GI, won't spike blood sugar"},
+        {"from": "maida roti/puri", "to": "whole wheat or besan chilla", "reason": "Higher fibre, slower glucose release"},
+        {"from": "sugar in chai", "to": "cinnamon or skip entirely", "reason": "Cinnamon improves insulin sensitivity"},
+        {"from": "potato sabzi", "to": "raw banana or yam (suran) in small portions", "reason": "Lower GI than potato"},
+        {"from": "fruit juice", "to": "whole fruit with peel where possible", "reason": "Fibre slows sugar absorption"},
+        {"from": "white bread upma", "to": "oats upma or ragi porridge", "reason": "Complex carbs with fibre"}
+      ],
+      "superfoods": ["karela", "methi", "amla", "cinnamon", "turmeric", "flaxseed", "ragi"]
+    },
+
+    "pcos": {
+      "label": "PCOS",
+      "core_principle": "PCOS is driven by insulin resistance and hormonal imbalance. Low-GI, anti-inflammatory, high-fibre, high-protein diet is key. Avoid refined carbs, dairy in excess, and processed foods.",
+      "dietary_rules": {
+        "avoid": [
+          "refined sugar and artificial sweeteners",
+          "maida and white rice",
+          "excess dairy (especially full-fat milk in large quantities)",
+          "processed and packaged foods",
+          "deep-fried foods",
+          "soy in excess (phytoestrogens can disrupt hormones)"
+        ],
+        "prefer": [
+          "millets — bajra, jowar, ragi (anti-inflammatory, low GI)",
+          "lentils and legumes for plant protein",
+          "flaxseed — supports estrogen balance",
+          "pumpkin seeds — zinc for hormone health",
+          "spearmint (pudina) — reduces androgen levels",
+          "turmeric — anti-inflammatory",
+          "cinnamon — improves insulin sensitivity",
+          "leafy greens — methi, palak, sarson",
+          "berries and amla — antioxidants",
+          "healthy fats — ghee, coconut oil, nuts in moderation"
+        ],
+        "portion_guidance": "Protein at every meal. Never eat carbs alone. Include healthy fat with each meal to slow glucose absorption.",
+        "meal_timing": "Regular meals, never skip breakfast. Intermittent fasting should be approached carefully with PCOS."
+      },
+      "condition_specific_swaps": [
+        {"from": "full fat milk in large amounts", "to": "almond milk or small amount of A2 cow milk", "reason": "Reduces excess estrogen load"},
+        {"from": "white rice", "to": "barnyard millet (sanwa)", "reason": "Low GI, high fibre"},
+        {"from": "refined sugar mithai", "to": "date and nut ladoo in moderation", "reason": "Natural sugar with fibre"},
+        {"from": "soy milk", "to": "oat milk or almond milk", "reason": "Avoids phytoestrogen excess"},
+        {"from": "regular chai with sugar", "to": "spearmint tea or cinnamon chai without sugar", "reason": "Spearmint reduces androgens, cinnamon helps insulin"}
+      ],
+      "superfoods": ["flaxseed", "pumpkin seeds", "spearmint", "cinnamon", "turmeric", "amla", "ragi", "bajra"]
+    },
+
+    "hypertension": {
+      "label": "Hypertension (High Blood Pressure)",
+      "core_principle": "Reduce sodium, increase potassium and magnesium. DASH diet principles adapted for the Indian vegetarian kitchen. Avoid pickles, papads, packaged snacks.",
+      "dietary_rules": {
+        "avoid": [
+          "excess salt — limit to 1 tsp per day total",
+          "pickles (achar) — extremely high sodium",
+          "papad — high sodium",
+          "packaged namkeen and chips",
+          "processed cheese",
+          "canned foods with added salt",
+          "excess caffeine",
+          "alcohol"
+        ],
+        "prefer": [
+          "banana — high potassium",
+          "coconut water — natural electrolyte balance",
+          "leafy greens — palak, methi (magnesium)",
+          "dal and legumes — potassium and fibre",
+          "flaxseed — omega-3, reduces BP",
+          "garlic — natural ACE inhibitor",
+          "amla — vitamin C, reduces arterial stiffness",
+          "watermelon — L-citrulline for BP",
+          "beets (chukandar) — nitrates that relax blood vessels",
+          "sesame seeds (til) — magnesium and calcium"
+        ],
+        "portion_guidance": "Low sodium across all meals. Read every label for hidden sodium. Increase potassium-rich foods at every meal.",
+        "meal_timing": "Regular meals. Avoid heavy dinners late at night."
+      },
+      "condition_specific_swaps": [
+        {"from": "salt for flavour", "to": "lemon juice, amchur, coriander, cumin", "reason": "Adds flavour without sodium"},
+        {"from": "achar/pickle as side", "to": "fresh coriander chutney (no salt) or plain dahi", "reason": "Eliminates sodium spike"},
+        {"from": "papad", "to": "roasted makhana or cucumber slices", "reason": "Zero added sodium snack"},
+        {"from": "packaged masala", "to": "fresh ground spices at home", "reason": "Packaged masalas contain hidden sodium"},
+        {"from": "salted butter", "to": "homemade ghee in small amounts", "reason": "No added sodium"}
+      ],
+      "superfoods": ["garlic", "amla", "flaxseed", "banana", "beets", "coconut water", "til/sesame", "methi"]
+    },
+
+    "high_cholesterol": {
+      "label": "High Cholesterol",
+      "core_principle": "Reduce saturated and trans fats. Increase soluble fibre, omega-3 fatty acids, and plant sterols. Avoid vanaspati, excess ghee, and fried foods.",
+      "dietary_rules": {
+        "avoid": [
+          "vanaspati / dalda — trans fats",
+          "excess ghee and butter",
+          "full-fat paneer in large amounts",
+          "deep-fried foods — puri, bhatura, pakora",
+          "coconut oil in excess",
+          "packaged biscuits with partially hydrogenated oils",
+          "cream and malai in large amounts"
+        ],
+        "prefer": [
+          "oats — beta-glucan reduces LDL",
+          "rajma, chana, moong — soluble fibre",
+          "flaxseed — omega-3, reduces triglycerides",
+          "walnuts — best plant source of omega-3",
+          "methi seeds — lowers LDL",
+          "garlic — reduces total cholesterol",
+          "amla — antioxidant, raises HDL",
+          "eggplant (baingan) — plant sterols",
+          "okra (bhindi) — soluble fibre",
+          "olive oil or mustard oil over refined oil"
+        ],
+        "portion_guidance": "Use 1 tsp oil per serving. Include soluble fibre at every meal. One handful of nuts daily.",
+        "meal_timing": "Regular meals. Include oats at breakfast for maximum beta-glucan benefit."
+      },
+      "condition_specific_swaps": [
+        {"from": "vanaspati / dalda", "to": "cold-pressed mustard oil or olive oil", "reason": "Eliminates trans fats"},
+        {"from": "excess ghee in dal/sabzi", "to": "1 tsp ghee max + mustard oil for cooking", "reason": "Reduces saturated fat load"},
+        {"from": "full-fat paneer", "to": "low-fat paneer or tofu", "reason": "Lower saturated fat, same protein"},
+        {"from": "white bread / maida snacks", "to": "oats chilla or besan snacks", "reason": "Soluble fibre reduces LDL"},
+        {"from": "deep-fried puri", "to": "tawa roti or baked version", "reason": "Eliminates excess oil absorption"},
+        {"from": "cream-based gravies", "to": "cashew paste or dahi-based gravies", "reason": "Lower saturated fat"}
+      ],
+      "superfoods": ["oats", "flaxseed", "walnuts", "methi seeds", "garlic", "amla", "rajma", "bhindi"]
+    },
+
+    "thyroid": {
+      "label": "Thyroid (Hypothyroidism)",
+      "core_principle": "Support thyroid function with selenium, iodine, and zinc. Avoid goitrogens in raw form (cruciferous vegetables). Time nutrients around medication.",
+      "dietary_rules": {
+        "avoid": [
+          "raw cruciferous vegetables in large amounts — raw cabbage, raw cauliflower, raw broccoli (cooking neutralises goitrogens)",
+          "excess soy — inhibits thyroid hormone absorption",
+          "excess millet in hypothyroidism (goitrogenic in very large amounts)",
+          "coffee within 1 hour of thyroid medication",
+          "calcium-rich foods within 4 hours of medication",
+          "highly processed foods"
+        ],
+        "prefer": [
+          "iodised salt — essential for thyroid hormone production",
+          "selenium-rich foods — Brazil nuts (1-2/day), sunflower seeds",
+          "zinc sources — pumpkin seeds, chickpeas, cashews",
+          "cooked cruciferous vegetables are fine — cooking destroys goitrogens",
+          "turmeric — anti-inflammatory",
+          "ginger — supports metabolism",
+          "coconut oil — medium-chain fatty acids support thyroid",
+          "whole grains — energy for sluggish metabolism",
+          "iron-rich foods — spinach, lentils (iron deficiency worsens hypothyroidism)"
+        ],
+        "portion_guidance": "Balanced meals. Eat cruciferous vegetables cooked, not raw. Take thyroid medication on empty stomach, wait 1 hour before eating.",
+        "meal_timing": "Medication timing is critical. Consistent meal times support metabolic rhythm."
+      },
+      "condition_specific_swaps": [
+        {"from": "raw cabbage salad", "to": "stir-fried or steamed cabbage", "reason": "Cooking neutralises goitrogens"},
+        {"from": "soy milk daily", "to": "almond or oat milk", "reason": "Soy inhibits thyroid hormone absorption"},
+        {"from": "large amounts of millet daily", "to": "rotate with whole wheat and brown rice", "reason": "Variety reduces goitrogen load"},
+        {"from": "iodine-free salt", "to": "iodised salt", "reason": "Iodine essential for thyroid hormone production"},
+        {"from": "raw smoothies with kale/spinach in excess", "to": "lightly cooked greens", "reason": "Reduces goitrogen impact"}
+      ],
+      "superfoods": ["pumpkin seeds", "sunflower seeds", "turmeric", "ginger", "iodised salt", "lentils", "cooked greens"]
+    },
+
+    "obesity": {
+      "label": "Obesity / Weight Management",
+      "core_principle": "Create sustainable calorie deficit without hunger. High fibre, high protein, low refined carbs. Focus on satiety and habit change, not crash dieting.",
+      "dietary_rules": {
+        "avoid": [
+          "refined carbs — maida, white rice, white bread",
+          "liquid calories — juice, chai with sugar, lassi with sugar",
+          "deep-fried foods",
+          "packaged snacks and biscuits",
+          "late night eating",
+          "eating while distracted"
+        ],
+        "prefer": [
+          "high-volume, low-calorie foods — salads, soups, sabzi",
+          "protein at every meal — dal, legumes, paneer, curd",
+          "fibre-rich foods — vegetables, whole grains, flaxseed",
+          "water before meals — reduces appetite",
+          "green tea — mild metabolism boost",
+          "millets — filling, lower calorie density than rice",
+          "sprouts — high protein, low calorie",
+          "buttermilk (chaas) over full-fat lassi",
+          "roasted makhana, chana over fried snacks"
+        ],
+        "portion_guidance": "Use smaller plates. Half plate vegetables, quarter protein, quarter complex carbs. Chew slowly. Stop at 80% full.",
+        "meal_timing": "No eating after 8pm. Largest meal at lunch, lightest at dinner. 12-hour overnight fast minimum."
+      },
+      "condition_specific_swaps": [
+        {"from": "full-fat dahi", "to": "low-fat dahi or hung curd for raita", "reason": "Same probiotics, fewer calories"},
+        {"from": "sweetened lassi", "to": "plain chaas with jeera and mint", "reason": "Saves 150-200 kcal per glass"},
+        {"from": "white rice", "to": "cauliflower rice or small portion brown rice", "reason": "Significantly lower calories"},
+        {"from": "fried snacks", "to": "roasted makhana, chana, or sprouts chaat", "reason": "High satiety, low calorie"},
+        {"from": "ghee-laden dal tadka", "to": "dal with minimal ghee, extra haldi and jeera", "reason": "Saves 100-150 kcal per serving"},
+        {"from": "mithai for sweet craving", "to": "1 date + 2 walnuts", "reason": "Natural sweetness with fibre and healthy fat"}
+      ],
+      "superfoods": ["sprouts", "makhana", "chaas", "green tea", "flaxseed", "methi", "cucumber", "lauki"]
+    },
+
+    "general_wellbeing": {
+      "label": "General Wellbeing & Weight Management",
+      "core_principle": "No specific condition — just eating well, feeling good, and maintaining a healthy weight. Focus on whole foods, balanced macros, gut health, and sustainable habits rooted in the Indian kitchen.",
+      "dietary_rules": {
+        "avoid": [
+          "ultra-processed packaged foods",
+          "refined sugar in daily routine",
+          "refined flour (maida) as a staple",
+          "excess sodium from pickles, papads, packaged masalas",
+          "seed oils high in omega-6 (refined sunflower, soybean oil)",
+          "skipping meals",
+          "eating out of boredom or stress"
+        ],
+        "prefer": [
+          "whole grains and millets as carb base",
+          "dal or legumes at every meal for plant protein",
+          "rainbow vegetables — eat across colours daily",
+          "fermented foods daily — dahi, idli, dosa, kanji for gut health",
+          "seasonal and local produce over imported superfoods",
+          "adequate hydration — 8-10 glasses water + coconut water, chaas",
+          "healthy fats — 1 tsp ghee, cold-pressed oils, nuts and seeds",
+          "home-cooked meals over restaurant or packaged food",
+          "mindful eating — no screens, chew slowly"
+        ],
+        "portion_guidance": "Balanced thali approach — dal + sabzi + roti/rice + dahi. No food group is off-limits. Moderation over restriction.",
+        "meal_timing": "3 balanced meals. Avoid eating after 8pm. Light dinner. One optional small snack if needed."
+      },
+      "condition_specific_swaps": [
+        {"from": "packaged breakfast cereal", "to": "oats with nuts and seeds or ragi porridge", "reason": "Whole food, no hidden sugar or additives"},
+        {"from": "refined oil for daily cooking", "to": "cold-pressed mustard or groundnut oil", "reason": "Better fatty acid profile, unrefined"},
+        {"from": "white sugar in chai", "to": "skip sugar or use 1 small date", "reason": "Reduce daily sugar load without feeling deprived"},
+        {"from": "packaged namkeen for snacking", "to": "roasted chana, makhana, or sprouts chaat", "reason": "Real food, more nutrients, less sodium"},
+        {"from": "restaurant-style gravy with cream", "to": "home-cooked dahi or tomato-onion base", "reason": "Fewer hidden calories, more control over ingredients"},
+        {"from": "skipping breakfast", "to": "simple moong dal chilla or dahi with fruit", "reason": "Kickstarts metabolism, reduces overeating later"}
+      ],
+      "label_reading_focus": {
+        "what_to_check": [
+          "Serving size — companies make it tiny to hide how much you're actually eating",
+          "Added sugar — look for it under 20+ names: dextrose, corn syrup, maltose, fructose",
+          "Sodium — anything above 600mg per 100g is high",
+          "Ingredients list — if it has more than 5-6 ingredients or ones you can't pronounce, reconsider",
+          "Trans fat — '0g trans fat' can still mean up to 0.49g per serving. Check for 'partially hydrogenated oils'",
+          "Protein — most Indian packaged snacks have less than 2g. Not a protein source.",
+          "Fibre — aim for at least 3g per serving in any grain product"
+        ],
+        "red_flags_in_indian_packaged_foods": [
+          "'Multigrain' doesn't mean whole grain — check if refined flour is first ingredient",
+          "'No added sugar' may still contain fruit concentrates or artificial sweeteners",
+          "'Baked not fried' can still be high in refined flour and sodium",
+          "'Natural flavours' is a catch-all term — means nothing specific",
+          "Health claims on front of pack are marketing — always flip to the nutrition label"
+        ]
+      },
+      "superfoods": ["dahi", "sprouts", "seasonal vegetables", "dal", "amla", "turmeric", "flaxseed", "makhana", "coconut water"]
+    }
+  },
+
+  "ingredients": {
+    "grains_and_millets": [
+      {"name": "Ragi (Finger Millet)", "gi": "low", "protein_per_100g": 7.7, "fibre_per_100g": 3.6, "benefits": ["calcium-rich", "anti-diabetic", "gluten-free"], "conditions_good_for": ["diabetes", "pcos", "obesity", "high_cholesterol"], "conditions_caution": []},
+      {"name": "Bajra (Pearl Millet)", "gi": "low-medium", "protein_per_100g": 11.6, "fibre_per_100g": 1.2, "benefits": ["iron-rich", "magnesium", "warming grain"], "conditions_good_for": ["diabetes", "pcos", "hypertension", "obesity"], "conditions_caution": ["thyroid — limit quantity"]},
+      {"name": "Jowar (Sorghum)", "gi": "low", "protein_per_100g": 10.4, "fibre_per_100g": 6.3, "benefits": ["gluten-free", "high fibre", "antioxidant"], "conditions_good_for": ["diabetes", "pcos", "high_cholesterol", "obesity"], "conditions_caution": []},
+      {"name": "Foxtail Millet (Kangni)", "gi": "low", "protein_per_100g": 12.3, "fibre_per_100g": 8.0, "benefits": ["diabetic-friendly", "high protein millet"], "conditions_good_for": ["diabetes", "pcos", "obesity"], "conditions_caution": []},
+      {"name": "Brown Rice", "gi": "medium", "protein_per_100g": 2.6, "fibre_per_100g": 1.8, "benefits": ["whole grain", "magnesium", "B vitamins"], "conditions_good_for": ["diabetes", "hypertension", "obesity"], "conditions_caution": []},
+      {"name": "White Rice", "gi": "high", "protein_per_100g": 2.7, "fibre_per_100g": 0.4, "benefits": [], "conditions_good_for": [], "conditions_caution": ["diabetes", "pcos", "obesity"]},
+      {"name": "Whole Wheat Atta", "gi": "medium", "protein_per_100g": 12.0, "fibre_per_100g": 2.7, "benefits": ["fibre", "B vitamins"], "conditions_good_for": ["diabetes", "high_cholesterol", "obesity"], "conditions_caution": []},
+      {"name": "Maida (Refined Flour)", "gi": "high", "protein_per_100g": 10.0, "fibre_per_100g": 0.3, "benefits": [], "conditions_good_for": [], "conditions_caution": ["diabetes", "pcos", "obesity", "high_cholesterol"]},
+      {"name": "Oats", "gi": "low-medium", "protein_per_100g": 16.9, "fibre_per_100g": 10.6, "benefits": ["beta-glucan reduces LDL", "high satiety", "heart-healthy"], "conditions_good_for": ["high_cholesterol", "diabetes", "obesity", "hypertension"], "conditions_caution": []}
+    ],
+
+    "dals_and_legumes": [
+      {"name": "Moong Dal (Split Green Gram)", "gi": "low", "protein_per_100g": 24.0, "fibre_per_100g": 16.3, "benefits": ["easy to digest", "light", "cooling"], "conditions_good_for": ["diabetes", "pcos", "hypertension", "obesity", "thyroid"], "conditions_caution": []},
+      {"name": "Masoor Dal (Red Lentil)", "gi": "low", "protein_per_100g": 25.8, "fibre_per_100g": 10.7, "benefits": ["iron-rich", "folate", "quick cooking"], "conditions_good_for": ["diabetes", "pcos", "obesity", "thyroid"], "conditions_caution": []},
+      {"name": "Chana Dal (Split Chickpea)", "gi": "low", "protein_per_100g": 20.0, "fibre_per_100g": 11.0, "benefits": ["very low GI", "high protein", "zinc"], "conditions_good_for": ["diabetes", "pcos", "high_cholesterol", "obesity"], "conditions_caution": []},
+      {"name": "Rajma (Kidney Beans)", "gi": "low", "protein_per_100g": 22.0, "fibre_per_100g": 6.4, "benefits": ["soluble fibre", "potassium", "plant protein"], "conditions_good_for": ["high_cholesterol", "diabetes", "hypertension", "obesity"], "conditions_caution": []},
+      {"name": "Kabuli Chana (Chickpeas)", "gi": "low", "protein_per_100g": 19.0, "fibre_per_100g": 12.5, "benefits": ["zinc for thyroid", "plant protein", "iron"], "conditions_good_for": ["thyroid", "diabetes", "pcos", "obesity"], "conditions_caution": []},
+      {"name": "Toor Dal (Pigeon Pea)", "gi": "low-medium", "protein_per_100g": 22.0, "fibre_per_100g": 15.0, "benefits": ["staple protein", "folate", "potassium"], "conditions_good_for": ["diabetes", "hypertension", "pcos"], "conditions_caution": []}
+    ],
+
+    "vegetables": [
+      {"name": "Karela (Bitter Gourd)", "gi": "very low", "benefits": ["natural blood sugar regulator", "insulin-mimicking compounds"], "conditions_good_for": ["diabetes", "pcos", "obesity"], "conditions_caution": []},
+      {"name": "Methi Leaves (Fenugreek)", "gi": "very low", "benefits": ["improves insulin sensitivity", "reduces LDL", "iron-rich"], "conditions_good_for": ["diabetes", "pcos", "high_cholesterol", "thyroid"], "conditions_caution": []},
+      {"name": "Palak (Spinach)", "gi": "very low", "benefits": ["iron", "magnesium", "folate", "antioxidants"], "conditions_good_for": ["thyroid", "hypertension", "pcos", "obesity"], "conditions_caution": ["thyroid — cook before eating, don't eat raw in excess"]},
+      {"name": "Lauki (Bottle Gourd)", "gi": "very low", "benefits": ["high water content", "very low calorie", "cooling"], "conditions_good_for": ["hypertension", "obesity", "diabetes"], "conditions_caution": []},
+      {"name": "Bhindi (Okra)", "gi": "very low", "benefits": ["soluble fibre", "reduces LDL", "blood sugar stabiliser"], "conditions_good_for": ["diabetes", "high_cholesterol", "obesity"], "conditions_caution": []},
+      {"name": "Baingan (Eggplant)", "gi": "very low", "benefits": ["plant sterols", "antioxidants", "low calorie"], "conditions_good_for": ["high_cholesterol", "diabetes", "obesity"], "conditions_caution": []},
+      {"name": "Chukandar (Beetroot)", "gi": "medium", "benefits": ["nitrates relax blood vessels", "iron", "folate"], "conditions_good_for": ["hypertension", "thyroid"], "conditions_caution": ["diabetes — eat in moderation, medium GI"]},
+      {"name": "Cabbage (Patta Gobhi)", "gi": "very low", "benefits": ["vitamin C", "fibre", "anti-inflammatory"], "conditions_good_for": ["obesity", "high_cholesterol"], "conditions_caution": ["thyroid — always cook, never eat raw cabbage"]},
+      {"name": "Cauliflower (Phool Gobhi)", "gi": "very low", "benefits": ["low carb rice substitute", "vitamin C"], "conditions_good_for": ["diabetes", "obesity", "pcos"], "conditions_caution": ["thyroid — always cook thoroughly"]},
+      {"name": "Potato (Aloo)", "gi": "high", "benefits": ["potassium", "vitamin C"], "conditions_good_for": ["hypertension — small portions"], "conditions_caution": ["diabetes", "pcos", "obesity"]}
+    ],
+
+    "dairy_and_alternatives": [
+      {"name": "Dahi (Curd / Yogurt)", "benefits": ["probiotics", "protein", "calcium"], "conditions_good_for": ["diabetes", "pcos", "obesity", "hypertension"], "conditions_caution": [], "notes": "Plain, unsweetened only"},
+      {"name": "Chaas (Buttermilk)", "benefits": ["probiotics", "low calorie", "cooling", "hydrating"], "conditions_good_for": ["obesity", "hypertension", "diabetes"], "conditions_caution": [], "notes": "Make without added salt for hypertension"},
+      {"name": "Paneer (Cottage Cheese)", "benefits": ["high protein", "calcium", "satiating"], "conditions_good_for": ["pcos", "diabetes", "thyroid"], "conditions_caution": ["high_cholesterol — use low-fat version", "obesity — portion control"], "notes": "100g = 18g protein"},
+      {"name": "Full Fat Milk", "benefits": ["calcium", "protein"], "conditions_good_for": [], "conditions_caution": ["pcos — limit quantity", "high_cholesterol", "obesity"]},
+      {"name": "Ghee", "benefits": ["butyrate for gut health", "fat-soluble vitamin absorption", "anti-inflammatory"], "conditions_good_for": ["pcos — in moderation", "thyroid"], "conditions_caution": ["high_cholesterol — limit to 1 tsp/day", "obesity — measure carefully"], "notes": "1 tsp/day is therapeutic, excess is harmful"}
+    ],
+
+    "seeds_and_nuts": [
+      {"name": "Flaxseed (Alsi)", "benefits": ["omega-3", "lignans balance estrogen", "reduces LDL", "fibre"], "conditions_good_for": ["pcos", "high_cholesterol", "hypertension", "diabetes", "obesity"], "conditions_caution": [], "serving": "1 tbsp ground daily"},
+      {"name": "Pumpkin Seeds", "benefits": ["zinc for hormones", "magnesium", "anti-inflammatory"], "conditions_good_for": ["pcos", "thyroid", "hypertension"], "conditions_caution": [], "serving": "1 handful daily"},
+      {"name": "Sunflower Seeds", "benefits": ["selenium for thyroid", "vitamin E", "healthy fat"], "conditions_good_for": ["thyroid", "high_cholesterol"], "conditions_caution": [], "serving": "1 tbsp daily"},
+      {"name": "Sesame Seeds (Til)", "benefits": ["calcium", "magnesium", "iron", "lignans"], "conditions_good_for": ["hypertension", "pcos", "thyroid"], "conditions_caution": []},
+      {"name": "Walnuts (Akhrot)", "benefits": ["best plant omega-3", "reduces LDL", "brain health"], "conditions_good_for": ["high_cholesterol", "hypertension", "diabetes"], "conditions_caution": ["obesity — portion control, 4-5 halves/day"]},
+      {"name": "Makhana (Fox Nuts / Lotus Seeds)", "benefits": ["low calorie", "high protein snack", "antioxidants"], "conditions_good_for": ["obesity", "diabetes", "hypertension"], "conditions_caution": []}
+    ],
+
+    "spices_and_herbs": [
+      {"name": "Turmeric (Haldi)", "benefits": ["curcumin — anti-inflammatory", "antioxidant", "supports liver"], "conditions_good_for": ["pcos", "high_cholesterol", "diabetes", "thyroid", "obesity"], "conditions_caution": []},
+      {"name": "Cinnamon (Dalchini)", "benefits": ["improves insulin sensitivity", "reduces blood sugar", "anti-inflammatory"], "conditions_good_for": ["diabetes", "pcos", "obesity"], "conditions_caution": []},
+      {"name": "Methi Dana (Fenugreek Seeds)", "benefits": ["soluble fibre", "lowers blood sugar and LDL", "hormone balance"], "conditions_good_for": ["diabetes", "pcos", "high_cholesterol"], "conditions_caution": []},
+      {"name": "Garlic (Lehsun)", "benefits": ["natural ACE inhibitor for BP", "reduces cholesterol", "antimicrobial"], "conditions_good_for": ["hypertension", "high_cholesterol", "diabetes"], "conditions_caution": []},
+      {"name": "Ginger (Adrak)", "benefits": ["anti-inflammatory", "supports metabolism", "digestive"], "conditions_good_for": ["thyroid", "pcos", "obesity", "high_cholesterol"], "conditions_caution": []},
+      {"name": "Jeera (Cumin)", "benefits": ["digestive", "iron", "metabolism support"], "conditions_good_for": ["obesity", "diabetes", "pcos"], "conditions_caution": []},
+      {"name": "Ajwain (Carom Seeds)", "benefits": ["digestive", "anti-bloating", "metabolism"], "conditions_good_for": ["obesity", "diabetes"], "conditions_caution": []},
+      {"name": "Pudina (Spearmint)", "benefits": ["reduces androgens in PCOS", "digestive", "cooling"], "conditions_good_for": ["pcos"], "conditions_caution": []}
+    ]
+  },
+
+  "ingredient_swaps": [
+    {"from": "Maida (Refined Flour)", "to": "Besan (Chickpea Flour)", "ratio": "1:1", "benefit": "Higher protein and fibre, lower GI", "conditions": ["diabetes", "pcos", "obesity", "high_cholesterol"]},
+    {"from": "Maida (Refined Flour)", "to": "Whole Wheat Atta", "ratio": "1:1", "benefit": "More fibre, slower glucose release", "conditions": ["diabetes", "pcos", "obesity"]},
+    {"from": "Maida (Refined Flour)", "to": "Ragi Flour", "ratio": "1:1", "benefit": "Gluten-free, calcium-rich, low GI", "conditions": ["diabetes", "pcos", "thyroid"]},
+    {"from": "White Rice", "to": "Cauliflower Rice", "ratio": "1:1", "benefit": "90% fewer carbs, very low calorie", "conditions": ["diabetes", "pcos", "obesity"]},
+    {"from": "White Rice", "to": "Foxtail Millet", "ratio": "1:1", "benefit": "Low GI, high protein", "conditions": ["diabetes", "pcos"]},
+    {"from": "White Rice", "to": "Brown Rice (small portion)", "ratio": "1:0.75", "benefit": "More fibre, lower GI than white", "conditions": ["hypertension", "thyroid"]},
+    {"from": "Sugar", "to": "Dates (Khajoor) in moderation", "ratio": "1 tsp sugar : 1 date", "benefit": "Natural sugar with fibre, minerals", "conditions": ["pcos", "obesity"]},
+    {"from": "Sugar", "to": "Cinnamon + Cardamom for sweetness", "ratio": "skip sugar entirely", "benefit": "Zero sugar, insulin-sensitising", "conditions": ["diabetes"]},
+    {"from": "Heavy Cream (Malai)", "to": "Greek Yogurt / Hung Curd", "ratio": "1:1", "benefit": "Saves 400 kcal, adds protein and probiotics", "conditions": ["obesity", "pcos", "high_cholesterol"]},
+    {"from": "Heavy Cream (Malai)", "to": "Cashew Paste (soaked cashews blended)", "ratio": "1:1", "benefit": "Dairy-free, healthy fats, creamy texture", "conditions": ["high_cholesterol", "pcos"]},
+    {"from": "Excess Ghee", "to": "1 tsp Ghee + cold-pressed mustard oil", "ratio": "reduce by half", "benefit": "Reduces saturated fat, adds omega-3", "conditions": ["high_cholesterol", "obesity"]},
+    {"from": "Full Fat Milk", "to": "Almond Milk (unsweetened)", "ratio": "1:1", "benefit": "Lower calories, no animal hormones", "conditions": ["pcos", "high_cholesterol", "obesity"]},
+    {"from": "Refined Oil", "to": "Cold-pressed Mustard Oil", "ratio": "1:1", "benefit": "Omega-3, reduces inflammation", "conditions": ["high_cholesterol", "hypertension", "pcos"]},
+    {"from": "Salt", "to": "Lemon juice + Amchur + Fresh herbs", "ratio": "reduce salt by half", "benefit": "Maintains flavour, cuts sodium", "conditions": ["hypertension"]},
+    {"from": "Potato", "to": "Raw Banana (Kaccha Kela)", "ratio": "1:1", "benefit": "Lower GI, resistant starch", "conditions": ["diabetes", "pcos"]},
+    {"from": "Potato", "to": "Yam (Suran)", "ratio": "1:1", "benefit": "Medium GI, more fibre", "conditions": ["diabetes"]},
+    {"from": "Packaged Biscuit Snack", "to": "Roasted Makhana with turmeric", "ratio": "same volume", "benefit": "Low calorie, high protein, antioxidant", "conditions": ["obesity", "diabetes", "hypertension"]},
+    {"from": "Sweetened Lassi", "to": "Plain Chaas with jeera and pudina", "ratio": "1:1", "benefit": "Saves 150-200 kcal, probiotic", "conditions": ["obesity", "diabetes"]},
+    {"from": "Vanaspati / Dalda", "to": "Cold-pressed Coconut or Mustard Oil", "ratio": "1:1", "benefit": "Eliminates trans fats completely", "conditions": ["high_cholesterol", "hypertension", "pcos"]}
+  ],
+
+  "cuisine_profiles": {
+    "north_indian": {
+      "staples": ["whole wheat roti", "dal tadka", "paneer", "rajma", "chole", "aloo sabzi", "saag"],
+      "typical_issues": ["excess ghee", "maida in naan/puri", "high sodium in gravies", "heavy cream in restaurant-style curries"],
+      "healthy_defaults": ["tawa roti over puri", "dahi-based gravies over cream", "minimal ghee tadka", "millet roti"],
+      "signature_healthy_dishes": ["dal khichdi", "moong dal chilla", "saag with ragi roti", "rajma with brown rice"]
+    },
+    "south_indian": {
+      "staples": ["idli", "dosa", "sambar", "rasam", "rice", "coconut chutney"],
+      "typical_issues": ["white rice in large portions", "refined flour in some dosas", "coconut in excess for some conditions"],
+      "healthy_defaults": ["ragi dosa", "oats idli", "millets pongal", "sambar with lots of vegetables"],
+      "signature_healthy_dishes": ["ragi mudde", "pesarattu (moong dal dosa)", "vegetable kootu", "oats pongal"]
+    },
+    "gujarati": {
+      "staples": ["dal", "khichdi", "thepla", "dhokla", "handvo", "kadhi"],
+      "typical_issues": ["sugar added to dal and sabzi", "excess oil in farsan", "refined flour in some snacks"],
+      "healthy_defaults": ["undhiyu with minimal oil", "moong dal khichdi", "steamed dhokla", "besan-based snacks"],
+      "signature_healthy_dishes": ["moong dal khichdi", "steamed dhokla", "methi thepla (whole wheat)", "dal with no sugar"]
+    },
+    "maharashtrian": {
+      "staples": ["bhakri", "pitla", "varan bhaat", "misal", "poha", "usal"],
+      "typical_issues": ["white rice with varan", "excess oil in misal toppings", "sugar in some preparations"],
+      "healthy_defaults": ["jowar bhakri over rice", "sprouts usal", "poha with vegetables", "besan pitla"],
+      "signature_healthy_dishes": ["jowar bhakri with pitla", "sprouts misal", "oats poha", "moong usal"]
+    }
+  },
+
+  "cooking_methods": [
+    {"method": "Pressure Cooking", "benefit": "Retains nutrients, no added fat needed, quick", "preferred_for": ["dals", "legumes", "vegetables"], "vs": "boiling which leaches nutrients"},
+    {"method": "Tawa / Dry Roasting", "benefit": "Zero oil cooking, retains flavour", "preferred_for": ["rotis", "vegetables", "seeds"], "vs": "deep frying"},
+    {"method": "Steaming", "benefit": "Maximum nutrient retention, zero oil", "preferred_for": ["idli", "dhokla", "vegetables", "fish"], "vs": "frying or boiling"},
+    {"method": "Sautéing with minimal oil (1 tsp)", "benefit": "Flavour development with controlled fat", "preferred_for": ["sabzi", "tadka", "stir-fry"], "vs": "deep frying"},
+    {"method": "Air Frying", "benefit": "Crispy texture with 80-90% less oil", "preferred_for": ["pakora", "tikki", "snacks"], "vs": "deep frying"},
+    {"method": "Slow Cooking / Dum", "benefit": "Flavour without extra fat, tender results", "preferred_for": ["biryani", "dal", "curries"], "vs": "high-heat frying"},
+    {"method": "Raw / Sprouts", "benefit": "Maximum enzymes and nutrients", "preferred_for": ["salads", "sprouts chaat", "chutneys"], "conditions_caution": ["thyroid — avoid raw cruciferous"]}
+  ],
+
+  "meal_templates": {
+    "diabetic_day": {
+      "breakfast": "Moong dal chilla with mint chutney + 1 cup methi chai (no sugar)",
+      "mid_morning": "1 small apple + 5 almonds",
+      "lunch": "2 jowar roti + palak dal + karela sabzi + plain dahi",
+      "evening": "Roasted makhana + green tea",
+      "dinner": "Foxtail millet khichdi with lots of vegetables + chaas"
+    },
+    "pcos_day": {
+      "breakfast": "Ragi porridge with pumpkin seeds + spearmint tea",
+      "mid_morning": "1 tbsp flaxseed in water or smoothie",
+      "lunch": "2 bajra roti + chana dal + methi sabzi + dahi",
+      "evening": "Handful of mixed seeds + 1 date",
+      "dinner": "Moong dal soup + sautéed vegetables + small bowl brown rice"
+    },
+    "hypertension_day": {
+      "breakfast": "Oats with banana + coconut water",
+      "mid_morning": "Seasonal fruit",
+      "lunch": "2 whole wheat roti + toor dal (no extra salt) + lauki sabzi + dahi",
+      "evening": "Roasted makhana (unsalted) + herbal tea",
+      "dinner": "Dal khichdi + palak sabzi + chaas (no salt)"
+    }
+  }
+}

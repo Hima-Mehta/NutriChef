@@ -1,3 +1,14 @@
+---
+title: NutriChef
+emoji: 🥗
+colorFrom: green
+colorTo: yellow
+sdk: streamlit
+sdk_version: 1.40.0
+app_file: app.py
+pinned: false
+---
+
 # 🥗 NutriChef — Condition-Aware Healthy Recipes from Your Indian Kitchen
 
 > No more endless YouTube rabbit holes hunting for healthy alternatives. No more staring at a half-empty fridge feeling like you're compromising on the dish you actually want. Cooking from limited ingredients isn't a constraint — it's an art. And NutriChef is your creative partner in it.
@@ -8,7 +19,7 @@ Built specifically for **Indian vegetarian households** managing lifestyle disea
 
 ## 🚀 Live Demo
 
-🔗 [NutriChef on Hugging Face Spaces](#) *(link coming soon)*  
+🔗 [NutriChef on Streamlit Cloud](#) *(link coming soon)*  
 📹 [60-second Demo](#) *(Loom link coming soon)*
 
 ---
@@ -124,7 +135,7 @@ NutriChef: Yes — with some changes. The chole itself is great
 
 ## 🏗️ Architecture
 
-NutriChef is a **multi-agent LangGraph system with RAG-augmented specialist agents, tool use, and persistent condition-aware memory** — not a simple chatbot or a basic RAG pipeline.
+NutriChef is a **production-grade RAG pipeline** with condition-filtered semantic retrieval, prompt caching, structured JSON responses, and visual macro rendering — not a simple chatbot.
 
 ```
 User Input (dish OR ingredients + condition + cuisine)
@@ -132,69 +143,59 @@ User Input (dish OR ingredients + condition + cuisine)
     ▼
 ┌─────────────────────────────────────────┐
 │           Streamlit Frontend            │
-│  - Condition selector                   │
-│  - Image upload (fridge / label)        │
+│  app.py                                 │
+│  - Condition selector (7 conditions)    │
+│  - Mode: fridge / transform             │
+│  - Visual recipe card + macro pie chart │
+│  - Health score badge (1-10)            │
+│  - Conversation memory                  │
 └────────────────┬────────────────────────┘
-                 │
+                 │ agent_run(message, condition, cuisine, history)
                  ▼
 ┌─────────────────────────────────────────┐
-│        LangGraph Orchestrator           │
-│  - Routes to specialist agent           │
-│  - Manages condition-aware memory       │
-└──┬──────────┬──────────┬───────────┬───┘
-   │          │          │           │
-   ▼          ▼          ▼           ▼
-🧺 Fridge  🔄 Transform 📸 Vision  🏷️ Label
-Agent      Agent        Agent      Reader
-                                   Agent
-   └──────────────────────────────────┘
-                    │
-                    ▼
-     ┌──────────────────────────────┐
-     │        Shared Tools          │
-     │  - USDA Nutrition API        │
-     │  - Calorie Comparator        │
-     │  - Ingredient Substituter    │
-     └──────────────────────────────┘
-                    │
-                    ▼
-     ┌──────────────────────────────┐
-     │  ChromaDB — RAG Knowledge    │
-     │  Condition rules · Swaps     │
-     │  Ingredients · Cuisines      │
-     └──────────────────────────────┘
-                    │
-                    ▼
-     ┌──────────────────────────────┐
-     │     LangSmith (Tracing)      │
-     └──────────────────────────────┘
+│           agent.py — Generator          │
+│  - _detect_mode() → fridge/transform/   │
+│    label/general                        │
+│  - build_history() → last 10 turns      │
+│  - Structured JSON response (macros +   │
+│    health score + recipe)               │
+│  - Prompt caching (cache_control)       │
+└────────────────┬────────────────────────┘
+                 │ build_context_blocks(query, condition, cuisine)
+                 ▼
+┌─────────────────────────────────────────┐
+│           rag.py — Retrieval Layer      │
+│  - Condition rules block  → CACHED ✅   │
+│  - Cuisine profile block  → CACHED ✅   │
+│  - Retrieved RAG chunks   → dynamic 🔄  │
+└──────────────┬──────────────────────────┘
+               │ condition-filtered cosine search
+               ▼
+┌─────────────────────────────────────────┐
+│  ChromaDB — Vector Store                │
+│  167 chunks · HuggingFace embeddings    │
+│  all-MiniLM-L6-v2 · cosine similarity  │
+└──────────────┬──────────────────────────┘
+               │ indexed from
+               ▼
+┌─────────────────────────────────────────┐
+│  knowledge_base.json                    │
+│  7 conditions · 44 ingredients          │
+│  19 swaps · 4 cuisine profiles          │
+└─────────────────────────────────────────┘
 ```
 
-### Why Multi-Agent and not a single LLM call?
+### RAG — Condition-filtered retrieval
 
-A single LLM call with a big system prompt can't specialise. When someone uploads a nutrition label, you need a nutritionist-advocate who knows Indian food marketing tricks. When someone asks for a fridge recipe, you need a creative Indian chef. These are different personas, different retrieval strategies, different tool sets — handled cleanly by separate agents.
+ChromaDB stores 167 chunks from `knowledge_base.json` as HuggingFace embeddings. Every retrieval is filtered by condition — a diabetic user only gets diabetes-relevant chunks, never mixed with hypertension rules. The retriever returns the top-k most relevant chunks across three categories: condition rules, ingredient swaps, and cuisine profiles.
 
-### Agentic Pattern: Orchestrator → Specialist
+### Prompt Caching — 90% cost reduction
 
-The **Orchestrator** is a router. It reads the user's message, classifies intent (transform / fridge / image / label), and delegates to the right specialist agent. It never answers directly. Condition and dietary memory live here and are injected into every specialist agent's context.
+Static context (condition rules + cuisine profile) is marked with `cache_control: ephemeral`. Anthropic caches these for 5 minutes — repeated requests from the same user pay 10% of normal input token cost. Only the dynamic RAG chunks and user message are charged at full rate.
 
-Each **Specialist Agent** has:
-- A focused system prompt tuned to its task
-- Access to the shared RAG retriever
-- Its own subset of tools
-- A structured output schema so the frontend renders nutrition pills consistently
+### Structured JSON Responses
 
-### RAG — Not just retrieval, condition-filtered retrieval
-
-ChromaDB stores every entry from `knowledge_base.json` as an embedding. When an agent queries it, the retrieval is filtered by the user's condition — a diabetic user never gets hypertension-specific swap suggestions mixed into their context. The retriever returns the top-k most relevant chunks: condition rules + matching ingredients + applicable swaps.
-
-### Tool Use — Grounding responses in real data
-
-Agents decide autonomously whether to call a tool. If a user asks about a specific packaged ingredient, the agent calls the USDA API to fetch real macros rather than relying on the LLM's general knowledge. The Calorie Comparator tool computes the before/after macro delta for the nutrition breakdown shown in every response.
-
-### State Management with LangGraph
-
-LangGraph manages the conversation as a **stateful graph** — each node is an agent or tool, edges are conditional routing decisions. State (condition, preferences, conversation history, last retrieved context) persists across all nodes. This is what allows a user to say "I'm diabetic" once and have every subsequent agent response account for it automatically.
+Every Claude response is structured JSON — recipe name, ingredients, steps, nutrition (cal/protein/fat/carbs), health score (1-10), and reasoning. `app.py` renders this as a visual card with a Plotly macro pie chart and colour-coded health score badge, not raw text.
 
 ---
 
@@ -205,15 +206,13 @@ LangGraph manages the conversation as a **stateful graph** — each node is an a
 | 🔄 Dish Transformation | Make any recipe healthier with condition-aware swaps |
 | 🧺 Fridge-first Recipes | Generate healthy recipes from available ingredients |
 | 🏥 Condition Personalisation | Every recipe filtered through your specific health condition |
-| 📸 Snap your fridge | Upload a photo — NutriChef detects ingredients automatically |
-| 🏷️ Label Reader | Upload any nutrition label — get a plain-language breakdown that calls out misleading claims |
 | 🌍 Indian Cuisine First | North Indian, South Indian, Gujarati, Maharashtrian — not quinoa and kale |
 | 💬 Conversation Memory | Remembers your condition and preferences across the session |
-| 📊 Nutrition Breakdown | Calories, protein, fat, carbs — original vs healthy |
-| 🔍 RAG-Powered | Retrieves from a curated condition-aware knowledge base |
-| 🛠️ Tool-Augmented | Live USDA API for accurate nutritional data |
-| 🤖 Agentic Framework | LangGraph multi-agent — specialist agents for each mode |
-| 📡 Tracing | Full LangSmith observability for every agent call |
+| 📊 Macro Pie Chart | Visual breakdown of calories, protein, fat, carbs per recipe |
+| 🏆 Health Score | Every recipe scored 1-10 on condition alignment with reasoning |
+| 🔍 RAG-Powered | Condition-filtered semantic retrieval from curated knowledge base |
+| ⚡ Prompt Caching | 90% cost reduction on repeated context via Anthropic cache_control |
+| 📡 Opik Observability | Full tracing of every RAG retrieval and Claude API call |
 
 ---
 
@@ -221,58 +220,104 @@ LangGraph manages the conversation as a **stateful graph** — each node is an a
 
 ```
 nutrichef/
+├── app.py                       # Streamlit frontend — UI, recipe cards, macro charts
+├── requirements.txt             # Python dependencies
+├── .env.example                 # API key template (copy to .env, never commit)
+├── .env                         # your actual keys — gitignored, never committed
+├── .gitignore
+├── README.md
+├── .devcontainer/               # VS Code dev container — one click environment setup
+│   └── devcontainer.json
 ├── data/
-│   └── knowledge_base.json      # 7 conditions · 44 ingredients · 19 swaps · 4 cuisine profiles
-├── src/
-│   ├── rag.py                   # ChromaDB setup, embeddings, retrieval
-│   ├── agent.py                 # LangGraph orchestrator + specialist agents
-│   └── tools.py                 # USDA API, calorie comparator, ingredient substituter
-├── app.py                       # Streamlit frontend with condition selector + image upload
-├── requirements.txt
-└── .env                         # API keys (not committed)
+│   ├── knowledge_base.json      # 7 conditions · 44 ingredients · 19 swaps · 4 cuisine profiles
+│   └── chroma_db/               # ChromaDB vector index — gitignored, rebuilds automatically
+└── src/
+    ├── __init__.py
+    ├── rag.py                   # ChromaDB, HuggingFace embeddings, condition-filtered retrieval
+    └── agent.py                 # Generator — mode detection, RAG context, Claude API, JSON parsing
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **LLM:** Claude (via Anthropic API)
-- **Agentic Framework:** LangGraph
-- **Orchestration:** LangChain
-- **Vector Store:** ChromaDB
-- **Frontend:** Streamlit
-- **Nutrition Data:** USDA FoodData Central API
-- **Observability:** LangSmith
-- **Deployment:** Hugging Face Spaces
+- **LLM:** Claude `claude-sonnet-4-6` via Anthropic SDK (direct — no LangChain wrapper)
+- **Prompt Caching:** Anthropic `cache_control` — 90% cost reduction on repeated context
+- **Embeddings:** HuggingFace `sentence-transformers/all-MiniLM-L6-v2` — semantic search, free, local, no API key
+- **Vector Store:** ChromaDB — persistent, condition-filtered retrieval
+- **Visualisation:** Plotly — macro pie charts rendered per recipe
+- **Frontend:** Streamlit (v1 demo) → FastAPI + Next.js (production)
+- **Observability:** Opik — full RAG and LLM call tracing
+- **Deployment:** Streamlit Community Cloud (demo) → Railway (production)
 
 ---
 
 ## ⚡ Getting Started
 
-### 1. Clone the repo
+**Just want to try it?** → [NutriChef on Streamlit Cloud](#) *(no install needed)*
+
+---
+
+### Option A — Dev Container (recommended)
+
+The easiest way to run locally. Requires [VS Code](https://code.visualstudio.com/) and [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+#### 1. Clone the repo
 ```bash
 git clone https://github.com/yourusername/nutrichef.git
 cd nutrichef
 ```
 
-### 2. Install dependencies
+#### 2. Open in VS Code
 ```bash
-pip install -r requirements.txt
+code .
 ```
+VS Code will detect the `.devcontainer/` folder and prompt:
+> *"Reopen in Container"* → click it.
 
-### 3. Set up environment variables
+The container installs all dependencies automatically from `requirements.txt`.
+
+#### 3. Add your API keys
+Create a `.env` file in the project root:
 ```bash
 cp .env.example .env
-# Add your keys:
-# ANTHROPIC_API_KEY=
-# USDA_API_KEY=        (free at https://fdc.nal.usda.gov/api-key-signup)
-# LANGCHAIN_API_KEY=   (free at https://smith.langchain.com)
+```
+Open `.env` and fill in:
+```
+ANTHROPIC_API_KEY=sk-ant-your-key-here
+ANTHROPIC_WORKSPACE_ID=your-workspace-id   # only if using identity-linked key
 ```
 
-### 4. Run the app
+#### 4. Run
+In the VS Code terminal (inside the container):
 ```bash
 streamlit run app.py
 ```
+VS Code forwards port `8501` automatically — click the popup or open `http://localhost:8501`.
+
+> **First run:** downloads HuggingFace `all-MiniLM-L6-v2` (~80MB, cached after) and builds the ChromaDB index (~30 sec). Subsequent runs start instantly.
+
+---
+
+### Option B — Manual (venv)
+
+If you prefer not to use Docker:
+
+```bash
+git clone https://github.com/yourusername/nutrichef.git
+cd nutrichef
+
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+
+cp .env.example .env            # add your ANTHROPIC_API_KEY
+
+streamlit run app.py
+```
+
+
 
 ---
 
@@ -301,13 +346,19 @@ The knowledge base currently covers:
 - [x] Fridge-first recipe generation with cuisine preference
 - [x] Condition-aware personalisation (7 lifestyle conditions)
 - [x] Indian vegetarian knowledge base
-- [x] LangGraph multi-agent architecture
+- [x] HuggingFace semantic embeddings + ChromaDB RAG layer
+- [x] Prompt caching — 90% cost reduction on repeated context
+- [x] Structured JSON responses — recipe + macros + health score
+- [x] Visual recipe cards — Plotly macro pie chart + health score badge
+- [x] Conversation memory — last 10 turns
+- [x] Streamlit Cloud deployment
 
 ### 🚧 v2 — In Progress
 - [ ] 📸 Fridge photo — snap ingredients, skip the typing
 - [ ] 🏷️ Nutrition label reader — upload any label, get a plain-language breakdown
 - [ ] Weekly meal planner — 7-day plan based on condition + fridge
 - [ ] Grocery gap filler — "you're 2 ingredients away from this recipe"
+- [ ] Qdrant Cloud — persistent vector store for production"
 
 ### 🔮 v3 — Future Vision
 
@@ -325,7 +376,7 @@ NutriChef doesn't just tell you what to eat — it teaches you why. A progressiv
 ## 👩‍💻 About the Builder
 
 **Hima Mehta** — AI/LLM Engineer  
-[LinkedIn](https://www.linkedin.com/in/hima-mehta-46322237/) · [GitHub](#)
+[LinkedIn](#) · [GitHub](#)
 
 I built NutriChef because I lived the problem.
 

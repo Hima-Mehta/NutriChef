@@ -1,0 +1,33 @@
+# NutriChef — Python dependencies
+
+# ── LLM ───────────────────────────────────────────────────────────────────────
+anthropic>=0.40.0
+
+# ── Embeddings ────────────────────────────────────────────────────────────────
+# Primary: HuggingFace semantic embeddings
+# Downloads all-MiniLM-L6-v2 (~80MB) on first run, cached locally after
+sentence-transformers>=3.0.0
+
+# Required by sentence-transformers for model inference
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Fallback: TF-IDF (used if sentence-transformers unavailable)
+scikit-learn>=1.5.0
+
+# ── Vector store ──────────────────────────────────────────────────────────────
+chromadb>=0.5.0
+
+# ── Frontend ──────────────────────────────────────────────────────────────────
+streamlit>=1.40.0
+streamlit-tags>=1.2.8       # tag-style ingredient input chips
+
+# ── Observability ─────────────────────────────────────────────────────────────
+opik>=1.0.0
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0
+plotly>=5.18.0              # macro pie chart visualisation
+numpy>=1.26.0
+requests>=2.32.0
+Pillow>=10.0.0              # image upload support

@@ -385,7 +385,7 @@ def _render_recipe_card(data: dict):
                                      showarrow=False)]
             )
             fig.update_traces(textposition="inside")
-            st.plotly_chart(fig, use_container_width=True, config=dict(displayModeBar=False))
+            st.plotly_chart(fig, width='stretch', config=dict(displayModeBar=False))
 
     with col_info:
         st.markdown(f"""
@@ -420,6 +420,7 @@ def _render_recipe_card(data: dict):
             💡 <strong>Swap tip:</strong> {swap_tip}
         </div>
         """, unsafe_allow_html=True)
+
 
 
 # ── Header (always visible) ───────────────────────────────────────────────────
@@ -550,8 +551,6 @@ else:
         if st.session_state.ingredients:
             count = len([i for i in st.session_state.ingredients if i.strip()])
             badges_html += f'<span class="context-badge">🧺 {count} ingredients</span>'
-        if st.session_state.tokens_saved > 0:
-            badges_html += f'<span class="context-badge">⚡ {st.session_state.tokens_saved} tokens cached</span>'
         badges_html += '</div>'
         st.markdown(badges_html, unsafe_allow_html=True)
 
@@ -600,10 +599,6 @@ else:
                     cuisine   = CUISINE_MAP.get(st.session_state.cuisine),
                     history   = history
                 )
-
-                # Track cached tokens for display
-                if result["cached"]:
-                    st.session_state.tokens_saved += result["tokens_in"]
 
                 st.session_state.messages.append({
                     "role":       "assistant",

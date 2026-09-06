@@ -93,6 +93,67 @@ def _make_client() -> Anthropic:
 
 client = _make_client()
 
+# ── Session-level cumulative tracking — resets on process restart ─────────────
+_session = {
+    "requests":           0,
+    "tokens_input":       0,
+    "tokens_output":      0,
+    "tokens_cache_write": 0,
+    "tokens_cache_read":  0,
+    "tokens_total":       0,
+    "cost_total":         0.0,
+    "savings_total":      0.0,
+}
+
+# ── Pricing — claude-sonnet-4-6 (per 1M tokens) ──────────────────────────────
+MODEL_NAME          = "claude-sonnet-4-6"
+PRICE_INPUT         = 3.00   # $/1M input tokens
+PRICE_OUTPUT        = 15.00  # $/1M output tokens
+PRICE_CACHE_WRITE   = 3.75   # $/1M cache write tokens (first time, 25% more)
+PRICE_CACHE_READ    = 0.30   # $/1M cache read tokens  (90% cheaper than input)
+
+def calculate_cost(usage) -> dict:
+    """
+    Calculate exact cost from Anthropic usage object.
+    Returns breakdown in USD with 6 decimal places for accuracy.
+    """
+    input_tokens       = getattr(usage, "input_tokens",             0)
+    output_tokens      = getattr(usage, "output_tokens",            0)
+    cache_write_tokens = getattr(usage, "cache_creation_input_tokens", 0)
+    cache_read_tokens  = getattr(usage, "cache_read_input_tokens",  0)
+
+    # Tokens actually billed at full input rate =
+    # total input minus cache writes (billed separately) minus cache reads
+    billed_input = max(0, input_tokens - cache_write_tokens - cache_read_tokens)
+
+    cost_input       = (billed_input       / 1_000_000) * PRICE_INPUT
+    cost_output      = (output_tokens      / 1_000_000) * PRICE_OUTPUT
+    cost_cache_write = (cache_write_tokens / 1_000_000) * PRICE_CACHE_WRITE
+    cost_cache_read  = (cache_read_tokens  / 1_000_000) * PRICE_CACHE_READ
+    total_cost       = cost_input + cost_output + cost_cache_write + cost_cache_read
+
+    # What it would have cost WITHOUT caching
+    cost_without_cache = ((input_tokens + cache_write_tokens) / 1_000_000) * PRICE_INPUT                        + (output_tokens / 1_000_000) * PRICE_OUTPUT
+    savings = max(0, cost_without_cache - total_cost)
+
+    return {
+        "model":              MODEL_NAME,
+        "tokens_input":       input_tokens,
+        "tokens_output":      output_tokens,
+        "tokens_cache_write": cache_write_tokens,
+        "tokens_cache_read":  cache_read_tokens,
+        "tokens_total":       input_tokens + output_tokens,
+        "cost_input":         round(cost_input,       6),
+        "cost_output":        round(cost_output,      6),
+        "cost_cache_write":   round(cost_cache_write, 6),
+        "cost_cache_read":    round(cost_cache_read,  6),
+        "cost_total":         round(total_cost,       6),
+        "cost_without_cache": round(cost_without_cache, 6),
+        "savings":            round(savings,           6),
+        "cache_hit":          cache_read_tokens > 0,
+    }
+
+
 # ── System prompt — CACHED ────────────────────────────────────────────────────
 SYSTEM_PROMPT = """
 You are NutriChef — a condition-aware Indian vegetarian recipe assistant.
@@ -334,19 +395,53 @@ def run(
     # ── Parse structured JSON from Claude ──────────────────────────────────────
     # Claude sometimes wraps JSON in ```json ... ``` markdown fences
     # Use regex to extract the JSON object reliably regardless of wrapping
-    print(f"\n[DEBUG] Raw Claude response (first 200 chars):\n{response_text[:200]}\n")
     structured = _parse_json(response_text, mode)
-    print(f"[DEBUG] Parsed recipe_name: {structured.get('recipe_name')}")
-    print(f"[DEBUG] Parsed nutrition: {structured.get('nutrition')}")
-    print(f"[DEBUG] Parsed health_score: {structured.get('health_score')}\n")
+
+    cost = calculate_cost(usage)
+
+    # ── Update cumulative session totals ────────────────────────────────────
+    _session["requests"]           += 1
+    _session["tokens_input"]       += cost["tokens_input"]
+    _session["tokens_output"]      += cost["tokens_output"]
+    _session["tokens_cache_write"] += cost["tokens_cache_write"]
+    _session["tokens_cache_read"]  += cost["tokens_cache_read"]
+    _session["tokens_total"]       += cost["tokens_total"]
+    _session["cost_total"]         += cost["cost_total"]
+    _session["savings_total"]      += cost["savings"]
+
+    # ── Backend cost logging — visible in terminal, never in UI ──────────────
+    cache_status = "⚡ CACHE HIT" if cost["cache_hit"] else "  cache miss"
+    print(f"\n{'─'*55}")
+    print(f"  NutriChef · Request #{_session['requests']}")
+    print(f"{'─'*55}")
+    print(f"  Model      : {cost['model']}")
+    print(f"  Mode       : {mode}")
+    print(f"  Condition  : {condition}")
+    print(f"  Cache      : {cache_status}")
+    print(f"{'─'*55}")
+    print(f"  This request")
+    print(f"    Input        : {cost['tokens_input']:>8,}")
+    print(f"    Output       : {cost['tokens_output']:>8,}")
+    if cost['tokens_cache_write']:
+        print(f"    Cache write  : {cost['tokens_cache_write']:>8,}")
+    if cost['tokens_cache_read']:
+        print(f"    Cache read   : {cost['tokens_cache_read']:>8,}")
+    print(f"    Total tokens : {cost['tokens_total']:>8,}")
+    print(f"    Cost         : ${cost['cost_total']:.6f}")
+    if cost['savings'] > 0:
+        print(f"    Saved        : ${cost['savings']:.6f}  (vs no cache)")
+    print(f"{'─'*55}")
+    print(f"  Session cumulative  (requests: {_session['requests']})")
+    print(f"    Total tokens : {_session['tokens_total']:>8,}")
+    print(f"    Total cost   : ${_session['cost_total']:.6f}")
+    print(f"    Total saved  : ${_session['savings_total']:.6f}")
+    print(f"{'─'*55}\n")
 
     return {
-        "structured": structured,      # ← parsed JSON for visual rendering
-        "response":   response_text,   # ← raw text (fallback)
+        "structured": structured,    # ← parsed JSON for visual rendering
+        "response":   response_text, # ← raw text (fallback)
         "mode":       mode,
-        "cached":     cache_hit,
-        "tokens_in":  usage.input_tokens,
-        "tokens_out": usage.output_tokens
+        "cost":       cost,          # ← available if needed elsewhere
     }
 
 

@@ -1,3 +1,13 @@
+---
+title: NutriChef
+emoji: 🥗
+colorFrom: green
+colorTo: yellow
+sdk: streamlit
+sdk_version: 1.40.0
+app_file: app.py
+pinned: false
+---
 
 # 🥗 NutriChef — Condition-Aware Healthy Recipes from Your Indian Kitchen
 
